@@ -3,7 +3,6 @@ import { RootState } from '../store/index'
 import { authActions } from '../store/authSlice';
 import {useNavigate } from 'react-router-dom'
 import { useDispatch} from 'react-redux'
-import Button from '@mui/material/Button'
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -17,12 +16,12 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import HomeIcon from '@mui/icons-material/Home';
 import HelpIcon from '@mui/icons-material/Help';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import { Link } from 'react-router-dom';
 
 
 function MenuAll() {
@@ -34,26 +33,38 @@ function MenuAll() {
     const toggleDrawer = (newOpen: boolean) => () => {
       setOpen(newOpen);
       };
+
+
+      const salirLogin =()=>{
+        dispatch(authActions.logout(
+        ))
+        navigate('/')
+      }
+     
     
     
       const DrawerList = (
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
           <List >
+          <Link to={'/home'}  style={{textDecoration:'none', color:'black'}} >
               <ListItem >
-                <ListItemButton>
+                <ListItemButton >
                   <HomeIcon sx={{mr:2}}></HomeIcon>
                   <ListItemText>Home</ListItemText> 
                 </ListItemButton>
               </ListItem>
+           </Link>
           </List>
           <Divider />
           <List>
+          <Link to={'/reports'}  style={{textDecoration:'none', color:'black'}}>
               <ListItem >
                 <ListItemButton>
                   <InsertDriveFileIcon sx={{mr:2}}></InsertDriveFileIcon>
                   <ListItemText>Informes</ListItemText> 
                 </ListItemButton>
               </ListItem>
+              </Link>
           </List>
           <Divider />
           <List>
@@ -67,7 +78,7 @@ function MenuAll() {
           <Divider />
           <List>
               <ListItem >
-                <ListItemButton>
+                <ListItemButton onClick={salirLogin}>
                   <ExitToAppIcon sx={{mr:2}}></ExitToAppIcon>
                   <ListItemText>Salir</ListItemText> 
                 </ListItemButton>
@@ -91,8 +102,8 @@ function MenuAll() {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          News
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1}}>
+          {userData.userName}
         </Typography>
         <IconButton >
           <AccountBoxIcon fontSize='large' style={{color:'white'}}>

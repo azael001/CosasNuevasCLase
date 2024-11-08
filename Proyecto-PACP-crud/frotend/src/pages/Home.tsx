@@ -1,19 +1,25 @@
 import { useSelector } from 'react-redux'
 import { RootState } from '../store/index'
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid2'
-
+import { useEffect } from 'react';
+import {useNavigate } from 'react-router-dom'
 import MenuAll from '../components/MenuAll'
+import Dashboard from '../components/Dashboard';
 function Home() {
   // Almacenamos en la variable userData lo que obtenemos del store usando el hook useSelector
   const userData = useSelector((state: RootState) => state.authenticator)
   // Comprobamos por la consola qué obtenemos del store
+  const navigate = useNavigate()
+  const isLoggedin = userData.isAutenticated
+
+    useEffect(() => {
+    if (!isLoggedin) {
+    navigate('/')
+    }
+    }, [isLoggedin, navigate])
   return (
     <>
     <MenuAll/>
-    <Grid container  sx={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Typography variant='h2' color='primary'> Home de Pablo Azael: Soy el usuario {userData.userName} y tengo el rol de {userData.userRol}</Typography>
-      </Grid>
+    <Dashboard/>
     </>
   )
 }
