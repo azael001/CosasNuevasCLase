@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 //importo el fichero login.js que está en la carpeta services
 const login = require('./services/login')
+const item = require('./services/item')
 
 //Definimos el puerto por que va a escuchar nuestra API las peticiones
 const port  = 3030
@@ -38,7 +39,39 @@ app.get('/login', async function(req, res, next) {
         next(err);
     }
 })
+app.get('/addItem',async function(req, res, next) {
+    console.log(req.query)
+    console.log(req.query.nombre)
+    console.log(req.query.marca)
+    console.log(req.query.tipo)
+    console.log(req.query.precio)
+try {
+ res.json(await item.insertData(req))
+}catch(err){
+    console.error('Error while inserting items' , err.message);
+    next(err)
+    }
+})
+app.get('/getItems', async function(req, res, next) {
+    try {
+    res.json(await item.getData(req))
+    } catch (err) {
+    console.error(`Error while getting items `, err.message);
+    next(err);
+    }
+   })
 
+app.get('/deleteItem', async function(req, res, next) {
+ try {
+res.json(await item.deleteData)
+} catch (err) {
+console.error(`Error while deleting items `, err.message);
+next(err);
+}
+})
+   
+   
+  
 //Iniciamos la API
 app.listen(port)
 console.log('API escuchando en el puerto ' + port)
