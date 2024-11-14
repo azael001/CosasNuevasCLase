@@ -63,7 +63,7 @@ app.get('/getItems', async function(req, res, next) {
 
 app.get('/deleteItem', async function(req, res, next) {
  try {
-res.json(await item.deleteData)
+res.json(await item.deleteData(req))
 } catch (err) {
 console.error(`Error while deleting items `, err.message);
 next(err);
