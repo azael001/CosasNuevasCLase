@@ -2,7 +2,8 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid2";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import  { useState } from "react";
+import React from "react";
 import { Button } from '@mui/material';
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
@@ -12,6 +13,8 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useEffect } from "react";
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/index'
 function Dashboard() {
   useEffect(() => {
     fetchData();
@@ -29,12 +32,15 @@ function Dashboard() {
     tipo: ' ',
     precio: 0
   }
+  const userData = useSelector((state: RootState) => state.authenticator)
   const [tableData, setTableData] = useState([])
   const [item, setItem] = useState(itemInitialState)
+  const [admin, setadmin] = React.useState(false);
+
 
   async function handleSubmit(e: any) {
     e.preventDefault()
-    //Para que no mande el formulario, sino que haga lo que yo le diga
+ 
     console.log(item)
     fetch(`http://localhost:3030/addItem?nombre=${item.nombre}&marca=${item.marca}&tipo=${item.tipo}&precio=${item.precio}`)
       .then(response => response.json())
@@ -47,6 +53,7 @@ function Dashboard() {
           alert('No se han insertado bien')
         }
       })
+      setItem(itemInitialState)
   };
 
   async function handleDeleteItem(row: any) {
@@ -86,6 +93,7 @@ function Dashboard() {
     });
   };
 
+
   const handleChangeTipo = (e: any) => {
     setItem({
       ...item,
@@ -99,7 +107,18 @@ function Dashboard() {
       precio: parseFloat(e.target.value),
     });
   };
-  
+  useEffect(()=>{
+    if(userData.userRol=='admin'){
+      setadmin(true)
+    }
+    else{
+      setadmin(false)
+    }
+
+  });
+ 
+
+
   return (
 
     <Box component="form" sx={{ width: 1 }} onSubmit={handleSubmit}>
@@ -153,7 +172,8 @@ function Dashboard() {
         <Table aria-label="coleccion">
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
+              {admin &&(
+              <TableCell></TableCell>)}
               <TableCell>Nombre</TableCell>
               <TableCell>Marca</TableCell>
               <TableCell>Tipo</TableCell>
@@ -163,11 +183,12 @@ function Dashboard() {
           <TableBody>
             {tableData.map((row: itemtype) => (
               <TableRow key={row.id}>
+                {admin &&(
                 <TableCell>
                   <Button onClick={() => handleDeleteItem(row)}>
                     <DeleteForeverIcon />
                   </Button>
-                </TableCell>
+                </TableCell>)}
                 <TableCell>{row.nombre}</TableCell>
                 <TableCell>{row.marca}</TableCell>
                 <TableCell>{row.tipo}</TableCell>
