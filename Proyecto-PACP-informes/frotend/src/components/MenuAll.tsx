@@ -47,22 +47,15 @@ function MenuAll() {
       }
       useEffect(() =>{
         if(userData.userRol=='admin'){
+          setadmin(true)
           setImg(ad)
         }
         else{
+          setadmin(false)
           setImg(user)
         }
       },[userData.userRol])
 
-      useEffect(()=>{
-        if(userData.userRol=='admin'){
-          setadmin(true)
-        }
-        else{
-          setadmin(false)
-        }
-
-      });
      
     
     
