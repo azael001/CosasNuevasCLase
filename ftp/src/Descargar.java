@@ -28,10 +28,8 @@ public class Descargar {
 //                    System.out.println("Directorio inicial: " + ftpclient.printWorkingDirectory())
 //                    System.out.println("Directorio actual: " + ftpclient.printWorkingDirectory());
 
-
                     System.out.print("¿Deseas descargar de forma recursiva? (s/n): ");
                     String opcion = scanner.nextLine().trim().toLowerCase();
-
                     if (opcion.equals("s")) {
                         DescargaRecursiva(ftpclient, "/vol/4/xcontrib/window_managers/gwm/patches/", "./archivos");
                     } else {
@@ -65,8 +63,8 @@ public class Descargar {
         FTPFile[] remotefiles = ftpclient.listFiles();
         for (FTPFile f : remotefiles) {
             if (f.isFile()) {
-                String safeFileName = f.getName().replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
-                bo = new BufferedOutputStream(new FileOutputStream("./archivos/" + safeFileName));
+//                String safeFileName = f.getName().replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
+                bo = new BufferedOutputStream(new FileOutputStream("./archivos/" + f.getName()));
                 if (ftpclient.retrieveFile(f.getName(), bo)) {
                     System.out.println("Descarga de " + f.getName() + " correcta");
                 } else {
